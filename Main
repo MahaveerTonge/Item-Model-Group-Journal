@@ -1,0 +1,96 @@
+
+// Code for Num Sequence
+
+static void main(Args args)
+{
+    MT_MGNumberSeq numbSeq;
+    numbSeq = new MT_MGNumberSeq();
+    numbSeq.numSeq();
+}
+
+// Display product name
+
+public display Name productName()
+{
+    EcoResProductTranslation  ecoRes;
+    InventTable             invent;
+
+    select Name from ecoRes
+        join ItemId from invent
+            where invent.Product == ecoRes.Product
+            && invent.ItemId == this.Item;
+
+    return ecoRes.Name;
+}
+
+// Excel import
+
+static void main(Args args)
+{
+    if (dialog.run())
+    {
+        filename = dialogfield.value();
+
+        try
+        {
+            workbooks.open(filename);
+        }
+        catch (Exception::Error)
+        {
+            infolog.clear();
+            info(#Filecannotbeopened);
+        }
+
+        workbook    = workbooks.item(1);
+        worksheets  = workbook.worksheets();
+        worksheet   = worksheets.itemFromNum(1);
+        cells       = worksheet.cells();
+        excelCOM    = cells.comObject();
+        excelRow    = excelCOM.SpecialCells(11);
+        lastRow     = excelCOM.Row();
+
+        do
+        {
+            row++;
+            item = cells.item(row, 1).value().bStr();
+
+            if (item)
+            {
+                inventtable = InventTable::find(item);
+                if (inventtable)
+                {
+                    line       = MT_MGLine::find(item,RefRec,true);
+                    sample     = line.MGHeaderRef;
+                    lineItem   = line.Item;
+                }
+                if (line)
+                {
+                    ttsBegin;
+                    line.Item = item;
+                    line.update();
+                    info(#UpdatedItem+item);
+                    ttsCommit;
+                }
+                else
+                {
+                    ttsBegin;
+                    line.Item         = item;
+                    line.MGHeader     = grp;
+                    line.MGHeaderRef  = RefRec;
+                    line.ErrorLog     = "";
+                    line.insert();
+                    ttsCommit;
+                    i++;
+                }
+          }
+          else
+          {
+              info(#InvalidItem+item);
+          }
+          type = cells.item(row+1, 1).value().variantType();
+          }
+          while (row<lastRow);
+
+application.quit();
+info(strFmt("@SYS136776",i));
+}
