@@ -1,0 +1,29 @@
+# Item Model Group Journal for Microsoft Dynamics AX
+
+This project is an Enterprise Resource Planning (ERP) solution developed within Microsoft Dynamics AX 2012. Its primary purpose is to create and manage journals for updating the model group of various items, which is a critical but difficult task to handle manually at high volumes
+The system provides a robust interface for tracking items, handling dependencies, and logging errors for items that cannot be updated
+
+## 📋 Key Features
+
+**Journal Management**: Users can create and manage journals with unique number sequences, each tied to a specific item model group[cite: 1528, 1611].
+**Header and Line Forms**: The system uses a master-detail structure with header and line tables to manage journals and their corresponding items[cite: 1525]. [cite_start]A foreign key relation connects the two tables[cite: 1527, 1553].
+**Dual Item Entry**: Items can be added to a journal manually from the database or imported in bulk from an Excel file[cite: 1531, 1547].
+**Data Validation**: The Excel import function performs validation for uniqueness, null values, and other checks to ensure data consistency, logging any errors encountered[cite: 1532, 1533].
+**Automated Model Group Updates**: A dedicated update function allows users to change an item's model group to match the journal's model group[cite: 1534, 1548, 1629].
+**Error Logging**: If an item's model group cannot be updated due to existing dependencies, the failure is captured in an error log field for tracking[cite: 1536, 1549, 1559].
+**Auto-Populated Fields**: To improve user experience, fields like 'Item Name' and 'Line Model Group' are automatically populated based on the selected Item ID[cite: 1555].
+
+## 🛠️ Technology Stack
+
+**ERP Solution**: Microsoft Dynamics AX 2012 [cite: 1561]
+**Programming Language**: X++ [cite: 1588]
+**Development Environment**: MorphX IDE [cite: 1581, 1583]
+**Database**: Microsoft SQL Server [cite: 1484, 1563]
+**Reporting & BI**: SQL Server Reporting Services (SSRS) and SQL Server Analysis Services (SSAS) [cite: 1490, 1491]
+
+## 🏗️ Architecture
+
+[cite_start]The application follows a standard **three-tier architecture**[cite: 1482]:
+Database Tier**: A Microsoft SQL Server database that stores all business data and application metadata in the Model Store[cite: 1484, 1497].
+Server Tier**: The Application Object Server (AOS), which executes the core business logic written in X++[cite: 1486, 1501].
+Client Tier**: The Microsoft Dynamics AX rich client, which provides the user interface for end-users to interact with the application[cite: 1487, 1505].
